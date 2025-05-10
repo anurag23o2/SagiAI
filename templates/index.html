@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtificialVision | Text to Image Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-brain me-2"></i>SagiAI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gallery"><i class="fas fa-images me-1"></i> Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about"><i class="fas fa-info-circle me-1"></i> About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h1 class="display-4 fw-bold text-gradient">Transform Text Into Visual Art</h1>
+                    <p class="lead my-4">Harness the power of AI to instantly convert your descriptions into stunning visual imagery. Limited only by your imagination.</p>
+                    <a href="#generator" class="btn btn-primary btn-lg cta-button">
+                        <i class="fas fa-wand-magic-sparkles me-2"></i>Start Creating
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image-container">
+                        <div class="floating-cards">
+                            <div class="card-item" id="floatingCard1">
+                                <img src="/static/images/sample1.png" alt="Sample Image" class="img-fluid">
+                            </div>
+                            <div class="card-item" id="floatingCard2">
+                                <img src="/static/images/sample2.png" alt="Sample Image" class="img-fluid">
+                            </div>
+                            <div class="card-item" id="floatingCard3">
+                                <img src="/static/images/sample3.png" alt="Sample Image" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-overlay"></div>
+    </header>
+
+    <!-- Generator Section -->
+    <section id="generator" class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card generator-card">
+                        <div class="card-header">
+                            <h2 class="text-center mb-0"><i class="fas fa-sparkles me-2"></i>Image Generator</h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="generateForm">
+                                <div class="mb-4 position-relative">
+                                    <label for="prompt" class="form-label">Enter your prompt:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-keyboard"></i></span>
+                                        <input type="text" class="form-control form-control-lg" id="prompt" name="prompt" 
+                                            placeholder="e.g., A cyberpunk city with neon lights at night" required>
+                                    </div>
+                                    <div class="form-text">Be descriptive for better results. Try adding art styles or lighting details.</div>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg generate-btn" id="generateBtn">
+                                        <span class="btn-text"><i class="fas fa-wand-magic-sparkles me-2"></i>Generate Image</span>
+                                        <span class="btn-spinner d-none">
+                                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                            Creating...
+                                        </span>
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            <div id="loading" class="text-center mt-4 loading-container" style="display: none;">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <p class="mt-2 loading-text">AI is crafting your masterpiece...</p>
+                            </div>
+                            
+                            <div id="error" class="alert alert-danger mt-4 fade-in" style="display: none;"></div>
+                            
+                            <div id="result" class="mt-4 text-center result-container" style="display: none;">
+                                <h4 class="mb-3">Your Creation</h4>
+                                <div class="image-container"></div>
+                                <div class="mt-3 action-buttons">
+                                    <button class="btn btn-sm btn-outline-primary download-btn">
+                                        <i class="fas fa-download me-1"></i>Download
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary copy-prompt-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy prompt">
+                                        <i class="fas fa-copy me-1"></i>Copy Prompt
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-success share-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Share">
+                                        <i class="fas fa-share-alt me-1"></i>Share
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-5 bg-darker">
+        <div class="container">
+            <h2 class="text-center mb-5 section-title">
+                <i class="fas fa-images me-2"></i>Your Gallery
+                <div class="title-underline"></div>
+            </h2>
+            
+            <div class="gallery-filters text-center mb-4">
+                <button class="btn btn-outline-primary active filter-btn" data-filter="all">All</button>
+                <button class="btn btn-outline-primary filter-btn" data-filter="recent">Recent</button>
+                <button class="btn btn-outline-primary filter-btn" data-filter="favorites">Favorites</button>
+            </div>
+            
+            <div id="galleryEmpty" class="text-center py-5">
+                <div class="empty-gallery-icon">
+                    <i class="fas fa-image"></i>
+                </div>
+                <h4 class="mt-3">Your gallery is empty</h4>
+                <p class="text-muted">Generate your first image to start your collection!</p>
+                <a href="#generator" class="btn btn-outline-primary">Create Now</a>
+            </div>
+            
+            <div class="row g-4" id="historyImages">
+                <!-- Gallery items will be dynamically added here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="section-title mb-4">
+                        <i class="fas fa-info-circle me-2"></i>About ArtificialVision
+                        <div class="title-underline"></div>
+                    </h2>
+                    <p class="lead">Transforming imagination into visual reality using cutting-edge AI.</p>
+                    <p>ArtificialVision leverages Stable Diffusion AI models to create stunning images from text descriptions. Our platform connects to the Hugging Face API to provide you with state-of-the-art image generation capabilities.</p>
+                    <div class="features mt-4">
+                        <div class="feature-item">
+                            <i class="fas fa-bolt"></i>
+                            <span>Fast Generation</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-paint-brush"></i>
+                            <span>High Quality Images</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-cloud"></i>
+                            <span>Cloud Storage</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-lock"></i>
+                            <span>Secure & Private</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="tech-stack">
+                        <h3 class="mb-4">Technology Stack</h3>
+                        <div class="tech-cards">
+                            <div class="tech-card">
+                                <i class="fab fa-python"></i>
+                                <span>Python</span>
+                            </div>
+                            <div class="tech-card">
+                                <i class="fab fa-flask"></i>
+                                <span>Flask</span>
+                            </div>
+                            <div class="tech-card">
+                                <i class="fas fa-brain"></i>
+                                <span>Hugging Face</span>
+                            </div>
+                            <div class="tech-card">
+                                <i class="fab fa-bootstrap"></i>
+                                <span>Bootstrap</span>
+                            </div>
+                            <div class="tech-card">
+                                <i class="fab fa-js"></i>
+                                <span>JavaScript</span>
+                            </div>
+                            <div class="tech-card">
+                                <i class="fas fa-server"></i>
+                                <span>Render</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <span>&copy; 2025 ArtificialVision. All rights reserved.</span>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-inline social-icons text-center text-md-end mb-0">
+                        <li class="list-inline-item">
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Tooltips & Modals -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="copyToast" class="toast align-items-center text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="fas fa-check-circle me-2"></i>Copied to clipboard!
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
